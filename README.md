@@ -1,106 +1,87 @@
-☁️ AWS ECS Containerized Backend Project
+# Containerizing PostgreSQL Database
 
-A fully containerized full-stack infrastructure project deploying a Node.js API and a custom PostgreSQL database to the cloud using AWS Elastic Container Service (ECS) and Fargate.
+A Node.js backend with PostgreSQL database, both containerized and deployed on AWS ECS.
 
-🚀 Project Overview
+## What This Project Does
 
-This project demonstrates Infrastructure-as-Code and Container Orchestration principles. Instead of using a managed database service (like RDS), this project containerizes a custom PostgreSQL instance with pre-seeded data and runs it alongside the backend application in the same ECS Task, communicating via localhost.
+This project runs a Node.js API and PostgreSQL database in Docker containers. Both containers run together in AWS ECS, talking to each other via localhost.
 
-Key Features:
+## Tech Stack
 
-Backend: Node.js & Express REST API.
+- Node.js & Express
+- PostgreSQL
+- Docker
+- AWS ECS & Fargate
 
-Database: Custom PostgreSQL image with automated data seeding (50+ dummy users).
+## Project Structure
 
-Containerization: Multi-container setup using Docker.
+```
+├── Dockerfile          # Backend container
+├── Dockerfile.db       # Database container
+├── init.sql           # Database setup with 50 dummy users
+├── server.js          # Express API
+├── docker-compose.yml # Local development
+└── package.json       # Dependencies
+```
 
-Orchestration: Deployed on AWS ECS Fargate (Serverless Compute).
+## Run Locally
 
-Networking: Internal communication between containers in a single Task Definition.
+```bash
+# Clone the repo
+git clone https://github.com/Bilalshah1/Contanerizing-postgres-database.git
+cd Contanerizing-postgres-database
 
-📂 Project Structure
-
-/
-├── Dockerfile           # Builds the Node.js Backend image
-├── Dockerfile.db        # Builds the Custom Postgres image (baking in data)
-├── init.sql             # SQL script: Creates schema and seeds 50 dummy users
-├── server.js            # Express API handling database connections
-├── docker-compose.yml   # For local development and testing
-└── package.json         # Dependencies (pg, express, etc.)
-
-
-🛠️ Tech Stack
-
-Cloud: AWS (ECS, Fargate, ECR)
-
-Containerization: Docker, Docker Compose
-
-Backend: Node.js, Express.js
-
-Database: PostgreSQL (Custom Image)
-
-Language: JavaScript, SQL
-
-💻 Local Setup (How to run)
-
-You can run this entire infrastructure locally using Docker Compose.
-
-Clone the repository:
-
-git clone [https://github.com/your-username/Containerizing-postgres-database.git](https://github.com/your-username/Containerizing-postgres-database.git)
-cd Containerizing-postgres-database
-
-
-Run with Docker Compose:
-
+# Start containers
 docker-compose up --build
 
+# Access the app
+# http://localhost:3000/users
+```
 
-Access the App (Locally):
-Open your browser to: http://localhost:3000/users
+## API Endpoints
 
-☁️ Deployment Architecture (AWS)
+- `GET /` - Health check
+- `GET /users` - Get all users from database
 
-The project is deployed using the following AWS pipeline:
+## AWS Deployment
 
-AWS ECR (Elastic Container Registry):
+### 1. Build and push images to ECR
 
-Created two separate private repositories: my-node-app and my-custom-db.
+```bash
+# Build images
+docker build -t my-node-app .
+docker build -t my-custom-db -f Dockerfile.db .
 
-Pushed both Docker images to the cloud using AWS CLI.
+# Login to ECR
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <account-id>.dkr.ecr.us-east-1.amazonaws.com
 
-AWS ECS (Task Definition):
+# Tag and push
+docker tag my-node-app:latest <account-id>.dkr.ecr.us-east-1.amazonaws.com/my-node-app:latest
+docker push <account-id>.dkr.ecr.us-east-1.amazonaws.com/my-node-app:latest
 
-Defined a single Task family my-project-task.
+docker tag my-custom-db:latest <account-id>.dkr.ecr.us-east-1.amazonaws.com/my-custom-db:latest
+docker push <account-id>.dkr.ecr.us-east-1.amazonaws.com/my-custom-db:latest
+```
 
-Configured Sidecar Pattern: Both the Node App and Postgres DB run in the same Task to share the network namespace (localhost).
+### 2. Create ECS Task Definition
 
-ECS Service & Cluster:
+Define both containers in one task so they can communicate via localhost.
 
-Created a Fargate Cluster my-cluster.
+### 3. Deploy to ECS
 
-Deployed a Service to maintain high availability (Desired Tasks: 1).
+Create a Fargate cluster and service, then configure security groups to allow traffic on port 3000.
 
-Configured Security Groups to allow inbound traffic on Port 3000.
+## Environment Variables
 
-📸 API Endpoints
+```
+POSTGRES_USER=myuser
+POSTGRES_PASSWORD=mypassword
+POSTGRES_DB=mydb
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+```
 
-Method
+## Author
 
-Endpoint
-
-Description
-
-GET
-
-/
-
-Health check (Returns "Backend is running!")
-
-GET
-
-/users
-
-Returns JSON list of 50 seeded users from DB
-
-Created for learning purposes to demonstrate mastery of Docker and AWS Cloud Deployment.
+**Bilal Shah**  
+GitHub: [@Bilalshah1](https://github.com/Bilalshah1)
