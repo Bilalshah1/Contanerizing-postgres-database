@@ -1,4 +1,4 @@
-# Contanerizing-postgres-database
+# Containerizing-postgres-database
 A fully containerized full-stack infrastructure project deploying a Node.js API and a custom PostgreSQL database to the cloud using AWS Elastic Container Service (ECS) and Fargate.
 
 🚀 Project Overview
