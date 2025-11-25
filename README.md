@@ -1,4 +1,5 @@
-# Containerizing-postgres-database
+☁️ AWS ECS Containerized Backend Project
+
 A fully containerized full-stack infrastructure project deploying a Node.js API and a custom PostgreSQL database to the cloud using AWS Elastic Container Service (ECS) and Fargate.
 
 🚀 Project Overview
@@ -16,6 +17,17 @@ Containerization: Multi-container setup using Docker.
 Orchestration: Deployed on AWS ECS Fargate (Serverless Compute).
 
 Networking: Internal communication between containers in a single Task Definition.
+
+📂 Project Structure
+
+/
+├── Dockerfile           # Builds the Node.js Backend image
+├── Dockerfile.db        # Builds the Custom Postgres image (baking in data)
+├── init.sql             # SQL script: Creates schema and seeds 50 dummy users
+├── server.js            # Express API handling database connections
+├── docker-compose.yml   # For local development and testing
+└── package.json         # Dependencies (pg, express, etc.)
+
 
 🛠️ Tech Stack
 
@@ -35,8 +47,8 @@ You can run this entire infrastructure locally using Docker Compose.
 
 Clone the repository:
 
-git clone [https://github.com/your-username/your-repo-name.git](https://github.com/Bilalshah1/Contanerizing-postgres-database.git)
-cd Contanerizing-postgres-database
+git clone [https://github.com/your-username/Containerizing-postgres-database.git](https://github.com/your-username/Containerizing-postgres-database.git)
+cd Containerizing-postgres-database
 
 
 Run with Docker Compose:
@@ -44,8 +56,8 @@ Run with Docker Compose:
 docker-compose up --build
 
 
-Access the App:
-Open your browser to: http://3.26.214.70:3000/users
+Access the App (Locally):
+Open your browser to: http://localhost:3000/users
 
 ☁️ Deployment Architecture (AWS)
 
