@@ -17,17 +17,6 @@ Orchestration: Deployed on AWS ECS Fargate (Serverless Compute).
 
 Networking: Internal communication between containers in a single Task Definition.
 
-📂 Project Structure
-
-/
-├── Dockerfile           # Builds the Node.js Backend image
-├── Dockerfile.db        # Builds the Custom Postgres image (baking in data)
-├── init.sql             # SQL script: Creates schema and seeds 50 dummy users
-├── server.js            # Express API handling database connections
-├── docker-compose.yml   # For local development and testing
-└── package.json         # Dependencies (pg, express, etc.)
-
-
 🛠️ Tech Stack
 
 Cloud: AWS (ECS, Fargate, ECR)
