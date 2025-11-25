@@ -1,0 +1,28 @@
+services:
+  app:
+    container_name: my-backend-container
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"  
+    environment:
+      - DB_HOST=db   
+      - DB_USER=postgres
+      - DB_PASSWORD=123
+      - DB_NAME=learning_db
+    depends_on:
+      - db           
+
+
+  db:
+    container_name: my-db-container
+    build:
+      context: .
+      dockerfile: Dockerfile.db
+    ports:
+      - "5432:5432"  
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=learning_db
