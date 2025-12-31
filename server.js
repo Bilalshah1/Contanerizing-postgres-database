@@ -27,5 +27,8 @@ app.get('/users', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
+python3 -m venv venv
+pip install google-generativeai
+source venv/bin/activate
 
 https://drive.google.com/file/d/1EPTcF3DLgfl6jD5ILYVpbHE3xErRK1un/view?usp=sharing
