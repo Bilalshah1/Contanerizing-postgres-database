@@ -23,7 +23,7 @@ app.get('/users', async (req, res) => {
     res.status(500).json({ error: 'Database connection failed' });
   }
 });
-\AIzaSyDfJeY2FzHzn5           \ icao2ixFagkTR1QRmDXg0
+
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
